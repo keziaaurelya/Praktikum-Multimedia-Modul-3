@@ -68,8 +68,9 @@
         #drag1 {
             width: 90px;
             cursor: move;
-            touch-action: none;
             user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
         }
 
         .footer {
@@ -94,7 +95,6 @@
 
     <h1>Praktikum Multimedia</h1>
     <h2>Modul 2 - HTML Audio, Video, YouTube dan API</h2>
-
 
     <section>
 
@@ -222,6 +222,8 @@
 
         <script>
 
+            /* DRAG AND DROP UNTUK LAPTOP */
+
             function allowDrop(ev) {
                 ev.preventDefault();
             }
@@ -244,70 +246,97 @@
             }
 
 
+            /* DRAG AND DROP UNTUK HP */
+
             var dragImage = document.getElementById("drag1");
             var dropBox = document.getElementById("div2");
 
-            var isDragging = false;
+            var dragging = false;
+            var clone = null;
 
 
-            dragImage.addEventListener("pointerdown", function(ev) {
+            dragImage.addEventListener("touchstart", function(ev) {
 
                 ev.preventDefault();
 
-                isDragging = true;
+                dragging = true;
 
-                dragImage.setPointerCapture(ev.pointerId);
+                var touch = ev.touches[0];
 
-                dragImage.style.opacity = "0.6";
+                clone = dragImage.cloneNode(true);
 
-            });
+                clone.style.position = "fixed";
+                clone.style.width = dragImage.offsetWidth + "px";
+                clone.style.height = dragImage.offsetHeight + "px";
+                clone.style.left =
+                    (touch.clientX - dragImage.offsetWidth / 2) + "px";
+                clone.style.top =
+                    (touch.clientY - dragImage.offsetHeight / 2) + "px";
+                clone.style.zIndex = "9999";
+                clone.style.pointerEvents = "none";
+                clone.style.opacity = "0.8";
+
+                document.body.appendChild(clone);
+
+                dragImage.style.opacity = "0.3";
+
+            }, { passive: false });
 
 
-            dragImage.addEventListener("pointermove", function(ev) {
+            dragImage.addEventListener("touchmove", function(ev) {
 
-                if (!isDragging) {
+                if (!dragging) {
                     return;
                 }
 
                 ev.preventDefault();
 
-            });
+                var touch = ev.touches[0];
+
+                clone.style.left =
+                    (touch.clientX - dragImage.offsetWidth / 2) + "px";
+
+                clone.style.top =
+                    (touch.clientY - dragImage.offsetHeight / 2) + "px";
+
+            }, { passive: false });
 
 
-            dragImage.addEventListener("pointerup", function(ev) {
+            dragImage.addEventListener("touchend", function(ev) {
 
-                if (!isDragging) {
+                if (!dragging) {
                     return;
                 }
 
-                isDragging = false;
+                ev.preventDefault();
 
-                dragImage.style.opacity = "1";
+                var touch = ev.changedTouches[0];
 
                 var rect = dropBox.getBoundingClientRect();
 
 
                 if (
-                    ev.clientX >= rect.left &&
-                    ev.clientX <= rect.right &&
-                    ev.clientY >= rect.top &&
-                    ev.clientY <= rect.bottom
+                    touch.clientX >= rect.left &&
+                    touch.clientX <= rect.right &&
+                    touch.clientY >= rect.top &&
+                    touch.clientY <= rect.bottom
                 ) {
 
                     dropBox.appendChild(dragImage);
 
                 }
 
-            });
 
-
-            dragImage.addEventListener("pointercancel", function() {
-
-                isDragging = false;
+                if (clone) {
+                    clone.remove();
+                    clone = null;
+                }
 
                 dragImage.style.opacity = "1";
 
-            });
+                dragging = false;
+
+            }, { passive: false });
 
         </script>
 
