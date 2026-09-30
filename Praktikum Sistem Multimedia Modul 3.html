@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Praktikum Multimedia - Modul 2</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #e6f7f6;
+            color: #0f766e;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0f766e;
+        }
+
+        h2 {
+            margin-top: 40px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 8px;
+            color: #0f766e;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        audio,
+        video {
+            display: block;
+            margin-top: 15px;
+        }
+
+        iframe {
+            display: block;
+            margin-top: 15px;
+        }
+
+        button {
+            padding: 8px 15px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        #div1, #div2 {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: top;
+    width: 150px;
+    height: 120px;
+    margin: 10px;
+    padding: 10px;
+    border: 2px solid black;
+    box-sizing: border-box;
+}
+
+#drag1 {
+    width: 90px;
+    cursor: move;
+}
+
+.footer {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: white;
+    border-top: 2px solid #ddd;
+    border-radius: 10px;
+    text-align: center;
+    color: #0f766e;
+}
+
+.footer p {
+    margin: 6px 0;
+}
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Praktikum Multimedia</h1>
+    <h2>Modul 2 - HTML Audio, Video, YouTube dan API</h2>
+
+
+    
+
+    <section>
+
+        <h2>1. HTML Audio</h2>
+
+        <p>
+            Contoh penggunaan audio pada halaman web (lagu that's the way it is by celine dion) :
+        </p>
+
+        <audio controls>
+            <source src="https://videotourl.com/audio/1790178333011-42d1cc06-353f-4949-8b74-6f1345febc81.mp3" type="audio/mpeg">
+            Browser Anda tidak mendukung elemen audio.
+        </audio>
+
+    </section>
+
+
+    
+
+    <section>
+    <h2>2. HTML Video</h2>
+
+    <p>
+        Contoh penggunaan video pada halaman web:
+    </p>
+
+    <video width="400" controls>
+        <source src="https://mp3tourl.com/videos/1790177746123-0ab28c55-30da-4754-b42b-ca361d3cf618.mp4">
+        Browser Anda tidak mendukung elemen video.
+    </video>
+</section>
+
+
+    
+
+    <section>
+
+        <h2>3. YouTube</h2>
+
+<p>
+    Berikut adalah contoh penggunaan <code>&lt;iframe&gt;</code> untuk
+    menyematkan video YouTube ke dalam halaman web.
+</p>
+
+<iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/_xPu3FjUBkc"
+    title="YouTube video"
+    allowfullscreen>
+</iframe>
+
+    </section>
+
+
+    
+
+    <section>
+
+        <h2>4. Geolocation API</h2>
+
+        <p>
+            Click the button to get your coordinates.
+        </p>
+
+        <button onclick="getLocation()">Try It</button>
+
+        <p id="demo"></p>
+
+        <script>
+
+            var x = document.getElementById("demo");
+
+            function getLocation() {
+
+                if (navigator.geolocation) {
+
+                    navigator.geolocation.getCurrentPosition(showPosition);
+
+                } else {
+
+                    x.innerHTML =
+                        "Geolocation is not supported by this browser.";
+
+                }
+
+            }
+
+            function showPosition(position) {
+
+                x.innerHTML =
+                    "Latitude: " + position.coords.latitude +
+                    "<br>Longitude: " + position.coords.longitude;
+
+            }
+
+        </script>
+
+    </section>
+
+
+    
+
+    <section>
+
+        <h2>5. Drag and Drop API</h2>
+
+        <p>
+            Drag gambar dari kotak pertama ke kotak kedua.
+        </p>
+
+        <div id="div1"
+             ondrop="drop(event)"
+             ondragover="allowDrop(event)">
+
+            <img
+                src="https://cdn.phototourl.com/member/2026-09-23-5a658103-2af2-4c8f-b00e-57fca06f349b.jpg"
+                draggable="true"
+                ondragstart="drag(event)"
+                id="drag1"
+                width="90">
+
+        </div>
+
+
+        <div id="div2"
+             ondrop="drop(event)"
+             ondragover="allowDrop(event)">
+        </div>
+
+        <script>
+
+            function allowDrop(ev) {
+                ev.preventDefault();
+            }
+
+            function drag(ev) {
+                ev.dataTransfer.setData("text", ev.target.id);
+            }
+
+            function drop(ev) {
+
+                ev.preventDefault();
+
+                var data = ev.dataTransfer.getData("text");
+
+                ev.target.appendChild(
+                    document.getElementById(data)
+                );
+
+            }
+
+        </script>
+
+        </section>
+
+    <footer class="footer">
+        <p><strong>Nama :</strong> Kezia Aurelya Mbatono</p>
+        <p><strong>NIM :</strong>  240211060092</p>
+    </footer>
+
+</div>
+
+</body>
+</html>
