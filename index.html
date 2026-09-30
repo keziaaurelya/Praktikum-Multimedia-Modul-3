@@ -53,36 +53,37 @@
         }
 
         #div1, #div2 {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    vertical-align: top;
-    width: 150px;
-    height: 120px;
-    margin: 10px;
-    padding: 10px;
-    border: 2px solid black;
-    box-sizing: border-box;
-}
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            vertical-align: top;
+            width: 150px;
+            height: 120px;
+            margin: 10px;
+            padding: 10px;
+            border: 2px solid black;
+            box-sizing: border-box;
+        }
 
-#drag1 {
-    width: 90px;
-    cursor: move;
-}
+        #drag1 {
+            width: 90px;
+            cursor: move;
+            touch-action: none;
+        }
 
-.footer {
-    margin-top: 30px;
-    padding: 20px;
-    background-color: white;
-    border-top: 2px solid #ddd;
-    border-radius: 10px;
-    text-align: center;
-    color: #0f766e;
-}
+        .footer {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: white;
+            border-top: 2px solid #ddd;
+            border-radius: 10px;
+            text-align: center;
+            color: #0f766e;
+        }
 
-.footer p {
-    margin: 6px 0;
-}
+        .footer p {
+            margin: 6px 0;
+        }
     </style>
 </head>
 
@@ -246,6 +247,43 @@
                 );
 
             }
+
+            var dragImage = document.getElementById("drag1");
+            var dropBox = document.getElementById("div2");
+
+            var touchStartX;
+            var touchStartY;
+
+            dragImage.addEventListener("touchstart", function(ev) {
+                ev.preventDefault();
+
+                touchStartX = ev.touches[0].clientX;
+                touchStartY = ev.touches[0].clientY;
+
+                dragImage.style.opacity = "0.5";
+            });
+
+            dragImage.addEventListener("touchmove", function(ev) {
+                ev.preventDefault();
+            });
+
+            dragImage.addEventListener("touchend", function(ev) {
+                ev.preventDefault();
+
+                var touch = ev.changedTouches[0];
+                var rect = dropBox.getBoundingClientRect();
+
+                if (
+                    touch.clientX >= rect.left &&
+                    touch.clientX <= rect.right &&
+                    touch.clientY >= rect.top &&
+                    touch.clientY <= rect.bottom
+                ) {
+                    dropBox.appendChild(dragImage);
+                }
+
+                dragImage.style.opacity = "1";
+            });
 
         </script>
 
