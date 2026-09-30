@@ -240,7 +240,7 @@
 
                 var draggedElement = document.getElementById(data);
 
-                if (ev.target.id === "div2") {
+                if (ev.target.id === "div1" || ev.target.id === "div2") {
                     ev.target.appendChild(draggedElement);
                 }
             }
@@ -249,7 +249,9 @@
             /* DRAG AND DROP UNTUK HP */
 
             var dragImage = document.getElementById("drag1");
-            var dropBox = document.getElementById("div2");
+
+            var dropBox1 = document.getElementById("div1");
+            var dropBox2 = document.getElementById("div2");
 
             var dragging = false;
             var clone = null;
@@ -268,10 +270,13 @@
                 clone.style.position = "fixed";
                 clone.style.width = dragImage.offsetWidth + "px";
                 clone.style.height = dragImage.offsetHeight + "px";
+
                 clone.style.left =
                     (touch.clientX - dragImage.offsetWidth / 2) + "px";
+
                 clone.style.top =
                     (touch.clientY - dragImage.offsetHeight / 2) + "px";
+
                 clone.style.zIndex = "9999";
                 clone.style.pointerEvents = "none";
                 clone.style.opacity = "0.8";
@@ -312,17 +317,34 @@
 
                 var touch = ev.changedTouches[0];
 
-                var rect = dropBox.getBoundingClientRect();
+                var rect1 = dropBox1.getBoundingClientRect();
+                var rect2 = dropBox2.getBoundingClientRect();
 
+
+                /* JIKA DILEPAS DI KOTAK KIRI */
 
                 if (
-                    touch.clientX >= rect.left &&
-                    touch.clientX <= rect.right &&
-                    touch.clientY >= rect.top &&
-                    touch.clientY <= rect.bottom
+                    touch.clientX >= rect1.left &&
+                    touch.clientX <= rect1.right &&
+                    touch.clientY >= rect1.top &&
+                    touch.clientY <= rect1.bottom
                 ) {
 
-                    dropBox.appendChild(dragImage);
+                    dropBox1.appendChild(dragImage);
+
+                }
+
+
+                /* JIKA DILEPAS DI KOTAK KANAN */
+
+                else if (
+                    touch.clientX >= rect2.left &&
+                    touch.clientX <= rect2.right &&
+                    touch.clientY >= rect2.top &&
+                    touch.clientY <= rect2.bottom
+                ) {
+
+                    dropBox2.appendChild(dragImage);
 
                 }
 
