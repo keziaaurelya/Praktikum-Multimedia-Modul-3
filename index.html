@@ -69,6 +69,7 @@
             width: 90px;
             cursor: move;
             touch-action: none;
+            user-select: none;
         }
 
         .footer {
@@ -95,8 +96,6 @@
     <h2>Modul 2 - HTML Audio, Video, YouTube dan API</h2>
 
 
-    
-
     <section>
 
         <h2>1. HTML Audio</h2>
@@ -113,45 +112,41 @@
     </section>
 
 
-    
-
     <section>
-    <h2>2. HTML Video</h2>
 
-    <p>
-        Contoh penggunaan video pada halaman web:
-    </p>
+        <h2>2. HTML Video</h2>
 
-    <video width="400" controls>
-        <source src="https://mp3tourl.com/videos/1790177746123-0ab28c55-30da-4754-b42b-ca361d3cf618.mp4">
-        Browser Anda tidak mendukung elemen video.
-    </video>
-</section>
+        <p>
+            Contoh penggunaan video pada halaman web:
+        </p>
 
+        <video width="400" controls>
+            <source src="https://mp3tourl.com/videos/1790177746123-0ab28c55-30da-4754-b42b-ca361d3cf618.mp4">
+            Browser Anda tidak mendukung elemen video.
+        </video>
 
-    
+    </section>
+
 
     <section>
 
         <h2>3. YouTube</h2>
 
-<p>
-    Berikut adalah contoh penggunaan <code>&lt;iframe&gt;</code> untuk
-    menyematkan video YouTube ke dalam halaman web.
-</p>
+        <p>
+            Berikut adalah contoh penggunaan <code>&lt;iframe&gt;</code> untuk
+            menyematkan video YouTube ke dalam halaman web.
+        </p>
 
-<iframe
-    width="560"
-    height="315"
-    src="https://www.youtube.com/embed/_xPu3FjUBkc"
-    title="YouTube video"
-    allowfullscreen>
-</iframe>
+        <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/_xPu3FjUBkc"
+            title="YouTube video"
+            allowfullscreen>
+        </iframe>
 
     </section>
 
-
-    
 
     <section>
 
@@ -197,8 +192,6 @@
     </section>
 
 
-    
-
     <section>
 
         <h2>5. Drag and Drop API</h2>
@@ -226,6 +219,7 @@
              ondragover="allowDrop(event)">
         </div>
 
+
         <script>
 
             function allowDrop(ev) {
@@ -242,56 +236,90 @@
 
                 var data = ev.dataTransfer.getData("text");
 
-                ev.target.appendChild(
-                    document.getElementById(data)
-                );
+                var draggedElement = document.getElementById(data);
 
+                if (ev.target.id === "div2") {
+                    ev.target.appendChild(draggedElement);
+                }
             }
+
 
             var dragImage = document.getElementById("drag1");
             var dropBox = document.getElementById("div2");
 
-            var touchStartX;
-            var touchStartY;
+            var isDragging = false;
 
-            dragImage.addEventListener("touchstart", function(ev) {
+
+            dragImage.addEventListener("pointerdown", function(ev) {
+
                 ev.preventDefault();
 
-                touchStartX = ev.touches[0].clientX;
-                touchStartY = ev.touches[0].clientY;
+                isDragging = true;
 
-                dragImage.style.opacity = "0.5";
+                dragImage.setPointerCapture(ev.pointerId);
+
+                dragImage.style.opacity = "0.6";
+
             });
 
-            dragImage.addEventListener("touchmove", function(ev) {
-                ev.preventDefault();
-            });
 
-            dragImage.addEventListener("touchend", function(ev) {
-                ev.preventDefault();
+            dragImage.addEventListener("pointermove", function(ev) {
 
-                var touch = ev.changedTouches[0];
-                var rect = dropBox.getBoundingClientRect();
-
-                if (
-                    touch.clientX >= rect.left &&
-                    touch.clientX <= rect.right &&
-                    touch.clientY >= rect.top &&
-                    touch.clientY <= rect.bottom
-                ) {
-                    dropBox.appendChild(dragImage);
+                if (!isDragging) {
+                    return;
                 }
 
+                ev.preventDefault();
+
+            });
+
+
+            dragImage.addEventListener("pointerup", function(ev) {
+
+                if (!isDragging) {
+                    return;
+                }
+
+                isDragging = false;
+
                 dragImage.style.opacity = "1";
+
+                var rect = dropBox.getBoundingClientRect();
+
+
+                if (
+                    ev.clientX >= rect.left &&
+                    ev.clientX <= rect.right &&
+                    ev.clientY >= rect.top &&
+                    ev.clientY <= rect.bottom
+                ) {
+
+                    dropBox.appendChild(dragImage);
+
+                }
+
+            });
+
+
+            dragImage.addEventListener("pointercancel", function() {
+
+                isDragging = false;
+
+                dragImage.style.opacity = "1";
+
             });
 
         </script>
 
-        </section>
+    </section>
+
 
     <footer class="footer">
+
         <p><strong>Nama :</strong> Kezia Aurelya Mbatono</p>
+
         <p><strong>NIM :</strong>  240211060092</p>
+
     </footer>
 
 </div>
